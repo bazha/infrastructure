@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package customers;
+
+// Define the gRPC service
+service CustomersService {
+  rpc GetCustomer(GetCustomerRequest) returns (GetCustomerResponse);
+}
+
+// Define request and response messages
+message GetCustomerRequest {
+  string customerId = 1;
+}
+
+message GetCustomerResponse {
+  string customerId = 1;
+  string name = 2;
+  string email = 3;
+}
