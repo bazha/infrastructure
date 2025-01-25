@@ -22,7 +22,7 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports: 
-      - 5672:5672
+      - ${RABBITMQ_PORT}:5672
       - 15672:15672
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
@@ -45,8 +45,9 @@ services:
       postgres:
           condition: service_healthy
     environment:
-      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+      RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:${RABBITMQ_PORT}
     restart: unless-stopped
+    command: npm run start:dev
     volumes:
       - ../infrastructure/protos:/usr/src/app/src/protos
     networks:
@@ -60,10 +61,11 @@ services:
       postgres:
           condition: service_healthy
     environment:
-      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+      RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:${RABBITMQ_PORT}
     volumes:
       - ../infrastructure/protos:/usr/src/app/src/protos
     restart: unless-stopped
+    command: npm run start:dev
     networks:
       - app-network
 
@@ -75,10 +77,11 @@ services:
       postgres:
           condition: service_healthy
     environment:
-      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+      RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:${RABBITMQ_PORT}
       PORT: 3000
       NODE_ENV: development
     restart: unless-stopped
+    command: npm run start:dev
     develop:
       watch:
         - action: sync
@@ -101,9 +104,9 @@ services:
       postgres:
           condition: service_healthy
     environment:
-      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+      RABBITMQ_URL: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:${RABBITMQ_PORT}
     restart: unless-stopped
-    command: npm run start:dev
+    command: sh -c "npm run migrate:generate && npm run migrate && npm run seeds && npm run start:dev"
     volumes:
       - ../infrastructure/protos:/usr/src/app/src/protos/
     networks:
