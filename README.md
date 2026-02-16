@@ -110,8 +110,6 @@ infrastructure/
 
 ⚠️ **Before production deployment:**
 - Change default passwords and rotate secrets
-- Review security checklist in `ENGINEERING_REVIEW.md`
-- See `ACTION_PLAN.md` for implementation roadmap
 - Enable SSL/TLS and implement proper secrets management
 
 ## Related Services
